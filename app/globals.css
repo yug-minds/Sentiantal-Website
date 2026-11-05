@@ -389,3 +389,93 @@
     }
   }
 }
+
+/* ---------- Home fields: pinned stage, tint follows the active field ---------- */
+.fields {
+  --fp: 0;
+  background: color-mix(in srgb, var(--tint) 9%, var(--ground));
+  transition: background-color 0.6s ease;
+}
+.fields-fill {
+  transform: scaleY(var(--fp));
+}
+.fields-name {
+  color: var(--muted);
+  opacity: 0.6;
+  transition: color 0.3s, opacity 0.3s, translate 0.3s;
+}
+.fields-name:hover {
+  opacity: 1;
+}
+.fields-name[aria-current] {
+  color: var(--ink);
+  opacity: 1;
+}
+@media (min-width: 768px) {
+  .fields-name[aria-current] {
+    translate: 0.5rem 0;
+  }
+}
+.fields-dot {
+  transition: scale 0.3s;
+}
+.fields-name[aria-current] .fields-dot {
+  scale: 1.6;
+}
+.fields-copy {
+  animation: fx-copy 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes fx-copy {
+  from { opacity: 0; translate: 0 12px; }
+}
+.fx {
+  opacity: 0;
+  scale: 0.96;
+  transition: opacity 0.4s, scale 0.5s;
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.fx[data-on] {
+  opacity: 1;
+  scale: 1;
+}
+.fx .fx-label {
+  fill: var(--ink);
+  stroke: none;
+  font: 700 17px var(--font-display);
+}
+.fx .fx-soft {
+  fill: var(--muted);
+  font-weight: 400;
+}
+.fx-draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.fx-pop, .fx-bar { fill: var(--c); stroke: none; opacity: 0; }
+.fx-ping { fill: var(--c); stroke: none; opacity: 0; }
+.fx-rain, .fx-wave { opacity: 0; }
+.fx-wave { stroke-width: 2.5; transform-box: fill-box; transform-origin: center; }
+.fx-rain { stroke-width: 3; }
+.fx-d2 { animation-delay: 0.3s !important; }
+.fx-d3 { animation-delay: 0.9s !important; }
+.fx-d4 { animation-delay: 1.2s !important; }
+.fx[data-on] .fx-draw { animation: fx-draw 1.2s ease-out forwards; }
+.fx[data-on] .fx-ecg { animation: fx-draw 1.8s ease-out forwards; }
+.fx[data-on] .fx-pop { animation: fx-pop 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) forwards; transform-box: fill-box; transform-origin: 100% 100%; }
+.fx[data-on] .fx-bar { animation: fx-bar 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; transform-box: fill-box; transform-origin: bottom; }
+.fx[data-on] .fx-ping { animation: fx-ping 1.8s 1.2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+.fx[data-on] .fx-rain { animation: fx-rain 1.4s linear infinite; }
+.fx[data-on] .fx-wave { animation: fx-wave 2.4s ease-out infinite; }
+@keyframes fx-draw { to { stroke-dashoffset: 0; } }
+@keyframes fx-pop { from { opacity: 0; scale: 0; } to { opacity: 1; scale: 1; } }
+@keyframes fx-bar { from { opacity: 0; scale: 1 0; } to { opacity: 1; scale: 1 1; } }
+@keyframes fx-ping { 0% { opacity: 1; scale: 1; } 100% { opacity: 0; scale: 3.2; } }
+@keyframes fx-rain { 0% { opacity: 0; translate: 0 0; } 20% { opacity: 1; } 100% { opacity: 0; translate: 0 70px; } }
+@keyframes fx-wave { 0% { opacity: 0.7; scale: 1; } 100% { opacity: 0; scale: 3.4; } }
+@media (prefers-reduced-motion: reduce) {
+  .fx[data-on] .fx-draw { animation: none; stroke-dashoffset: 0; }
+  .fx[data-on] .fx-pop, .fx[data-on] .fx-bar { animation: none; opacity: 1; }
+  .fx[data-on] .fx-ping, .fx[data-on] .fx-rain, .fx[data-on] .fx-wave { animation: none; }
+  .fields-fill { display: none; }
+}
