@@ -1,0 +1,310 @@
+@import "tailwindcss";
+
+/* The seam between the two wings on the home gateway. Registered so it can transition. */
+@property --split {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+
+@theme inline {
+  --font-display: var(--font-kallisto), var(--font-body), system-ui, sans-serif;
+  --font-sans: var(--font-body), var(--font-telugu), var(--font-devanagari), system-ui, sans-serif;
+
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+  --color-glow: var(--glow);
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+  --color-bad: var(--bad);
+}
+
+/* ---------- Wing themes. Brand hexes: #190910 #C73A7E (magenta), #2C267E #967FD2 (indigo). ---------- */
+[data-theme="brand"] {
+  --ground: #faf7fa;
+  --surface: #ffffff;
+  --raised: #f1eaf0;
+  --ink: #190910;
+  --muted: #655560;
+  --line: #e4d8e0;
+  --accent: #c73a7e;
+  --accent-ink: #a82a69;
+  --on-accent: #ffffff;
+  --focus: #c73a7e;
+  --glow: #c73a7e;
+  --good: #1b7a50;
+  --warn: #8a5a00;
+  --bad: #b3261e;
+}
+
+[data-theme="products"] {
+  --ground: #190910;
+  --surface: #2b1022;
+  --raised: #381830;
+  --ink: #f8f1f5;
+  --muted: #cdb7c4;
+  --line: #5a2243;
+  --accent: #c73a7e;
+  --accent-ink: #f08db9;
+  --on-accent: #ffffff;
+  --focus: #f08db9;
+  --glow: #c73a7e;
+  --good: #5fcf9a;
+  --warn: #f0b73a;
+  --bad: #ff7d73;
+  color-scheme: dark;
+}
+
+[data-theme="services"] {
+  --ground: #f3f0fc;
+  --surface: #ffffff;
+  --raised: #e8e3f8;
+  --ink: #17134a;
+  --muted: #54507f;
+  --line: #d4ccf0;
+  --accent: #2c267e;
+  --accent-ink: #2c267e;
+  --on-accent: #ffffff;
+  --focus: #2c267e;
+  --glow: #967fd2;
+  --good: #1b7a50;
+  --warn: #8a5a00;
+  --bad: #b3261e;
+}
+
+/* ---------- Type scale ---------- */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 5.6vw, 5.25rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+@utility display-l {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.1rem, 4.2vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+@utility h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 2.8vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+@utility h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  line-height: 1.2;
+}
+@utility lead {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.3rem, 2vw, 1.65rem);
+  line-height: 1.38;
+  text-wrap: pretty;
+}
+@utility measure {
+  max-width: 66ch;
+}
+@utility wrap {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    background: #faf7fa;
+    color: #190910;
+    font-variant-numeric: tabular-nums;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+  :focus-visible {
+    outline: 3px solid var(--focus, #c73a7e);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  button {
+    cursor: pointer;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+}
+
+/* ---------- Crossing between wings: a diagonal wipe. Only plays when a theme layout swaps. ---------- */
+::view-transition-old(.wing-out) {
+  animation: none;
+}
+::view-transition-new(.wing-in) {
+  animation: wing-wipe 700ms cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+@keyframes wing-wipe {
+  from {
+    clip-path: polygon(0 0, 0 0, -30% 100%, 0 100%);
+  }
+  to {
+    clip-path: polygon(0 0, 135% 0, 105% 100%, 0 100%);
+  }
+}
+::view-transition {
+  pointer-events: none;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ---------- Print: only the soil report ---------- */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    color: #190910 !important;
+    background: #fff !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ---------- Home gateway: two wings split by a slanted seam ---------- */
+.gateway {
+  --split: 50%;
+  --slant: 6rem;
+  --gutter: max(clamp(1rem, 4vw, 2.5rem), calc((100vw - 80rem) / 2 + clamp(1rem, 4vw, 2.5rem)));
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 34rem;
+  transition: --split 750ms cubic-bezier(0.65, 0, 0.25, 1);
+}
+.gateway:has(.wing-products:is(:hover, :focus-within)) {
+  --split: 62%;
+}
+.gateway:has(.wing-services:is(:hover, :focus-within)) {
+  --split: 38%;
+}
+.wing {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+}
+.wing-products {
+  z-index: 2;
+  clip-path: polygon(0 0, calc(var(--split) + var(--slant) / 2) 0, calc(var(--split) - var(--slant) / 2) 100%, 0 100%);
+}
+.wing-products .wing-body {
+  width: calc(var(--split) - var(--slant) / 2);
+  padding: 3rem 1.5rem 3rem var(--gutter);
+}
+.wing-services .wing-body {
+  margin-left: calc(var(--split) + var(--slant) / 2);
+  padding: 3rem var(--gutter) 3rem 1.5rem;
+}
+.seam-badge {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: var(--split);
+  width: 7rem;
+  height: 7rem;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 10px 40px -10px rgba(25, 9, 16, 0.55);
+}
+.seam-badge svg circle {
+  stroke-dasharray: 1;
+  animation: seam-ring 1.5s 0.25s cubic-bezier(0.5, 0, 0.2, 1) both;
+}
+@keyframes seam-ring {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (max-width: 767px) {
+  .gateway {
+    --slant: 3.5rem;
+    min-height: 0;
+    display: block;
+  }
+  .wing {
+    position: relative;
+    inset: auto;
+    display: block;
+  }
+  .wing-products {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--slant)), 0 100%);
+  }
+  .wing-products .wing-body {
+    width: auto;
+    padding: 2.25rem var(--gutter) calc(var(--slant) + 1.5rem);
+  }
+  .wing-services {
+    margin-top: calc(var(--slant) * -1);
+  }
+  .wing-services .wing-body {
+    margin: 0;
+    padding: calc(var(--slant) + 2.75rem) var(--gutter) 2.5rem;
+  }
+  .seam-badge {
+    top: calc(var(--slant) / 2);
+    left: 50%;
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+}
