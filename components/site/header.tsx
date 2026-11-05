@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Dialog } from "radix-ui";
@@ -23,24 +24,60 @@ const plain = [
 export function Header({ theme }: { theme: Theme }) {
   const pathname = usePathname();
   const current = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  const bar = useRef<HTMLSpanElement>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [glide, setGlide] = useState({ x: 0, w: 0, show: false });
+  // A pill follows the pointer or keyboard focus along the links.
+  const moveGlide = (e: { currentTarget: HTMLElement }) => {
+    const t = e.currentTarget;
+    setGlide({ x: t.offsetLeft, w: t.offsetWidth, show: true });
+  };
+
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.current?.style.setProperty("transform", `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`);
+      setScrolled(scrollY > 8);
+    };
+    const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); };
+    update();
+    addEventListener("scroll", onScroll, { passive: true });
+    return () => { cancelAnimationFrame(raf); removeEventListener("scroll", onScroll); };
+  }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-ground/90 backdrop-blur">
+    <header
+      data-scrolled={scrolled ? "" : undefined}
+      className="sticky top-0 z-40 border-b border-line bg-ground/75 backdrop-blur transition-[background-color,box-shadow] duration-300 data-[scrolled]:bg-ground/92 data-[scrolled]:shadow-[0_8px_30px_-12px_rgba(25,9,16,0.35)]"
+    >
       <div className="wrap flex h-[4.5rem] items-center justify-between gap-4">
         <Link href="/" aria-label="Sentiantal home" className="shrink-0">
           <Logo variant={logoFor[theme]} height={38} priority />
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-2 md:flex">
+        <nav
+          aria-label="Main"
+          className="relative hidden items-center gap-2 md:flex"
+          onPointerLeave={() => setGlide((g) => ({ ...g, show: false }))}
+          onBlur={() => setGlide((g) => ({ ...g, show: false }))}
+        >
+          <span
+            aria-hidden
+            className="nav-glide pointer-events-none absolute top-1/2 h-9 -translate-y-1/2 rounded-full bg-raised"
+            style={{ left: glide.x, width: glide.w, opacity: glide.show ? 1 : 0 }}
+          />
           <div className="flex rounded-full border border-line p-1">
             {wings.map((w) => (
               <Link
                 key={w.href}
                 href={w.href}
                 aria-current={current(w.href) ? "page" : undefined}
+                onPointerEnter={moveGlide}
+                onFocus={moveGlide}
                 className={clsx(
-                  "flex items-center gap-2 rounded-full px-4 py-2 font-display text-sm font-medium transition-colors",
-                  current(w.href) ? "bg-accent text-on-accent" : "hover:bg-raised",
+                  "relative flex items-center gap-2 rounded-full px-4 py-2 font-display text-sm font-medium transition-colors",
+                  current(w.href) && "bg-accent text-on-accent",
                 )}
               >
                 {!current(w.href) && (
@@ -55,8 +92,10 @@ export function Header({ theme }: { theme: Theme }) {
               key={l.href}
               href={l.href}
               aria-current={current(l.href) ? "page" : undefined}
+              onPointerEnter={moveGlide}
+              onFocus={moveGlide}
               className={clsx(
-                "rounded-full px-4 py-2 font-display text-sm font-medium transition-colors hover:bg-raised",
+                "relative rounded-full px-4 py-2 font-display text-sm font-medium",
                 current(l.href) && "underline decoration-2 underline-offset-8",
               )}
             >
@@ -73,10 +112,10 @@ export function Header({ theme }: { theme: Theme }) {
             <Menu aria-hidden size={20} />
           </Dialog.Trigger>
           <Dialog.Portal>
-            <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
+            <Dialog.Overlay className="menu-overlay fixed inset-0 z-50 bg-black/50" />
             <Dialog.Content
               data-theme={theme}
-              className="fixed inset-y-0 right-0 z-50 flex w-[min(22rem,88vw)] flex-col gap-2 bg-ground p-6 text-ink shadow-2xl"
+              className="menu-panel fixed inset-y-0 right-0 z-50 flex w-[min(22rem,88vw)] flex-col gap-2 bg-ground p-6 text-ink shadow-2xl"
             >
               <Dialog.Title className="sr-only">Menu</Dialog.Title>
               <Dialog.Description className="sr-only">Site navigation</Dialog.Description>
@@ -86,13 +125,14 @@ export function Header({ theme }: { theme: Theme }) {
               >
                 <X aria-hidden size={20} />
               </Dialog.Close>
-              {[...wings, ...plain].map((l) => (
+              {[...wings, ...plain].map((l, i) => (
                 <Dialog.Close asChild key={l.href}>
                   <Link
                     href={l.href}
+                    style={{ ["--i" as string]: i }}
                     aria-current={current(l.href) ? "page" : undefined}
                     className={clsx(
-                      "rounded-2xl px-4 py-4 font-display text-xl font-bold",
+                      "menu-item rounded-2xl px-4 py-4 font-display text-xl font-bold",
                       current(l.href) ? "bg-accent text-on-accent" : "hover:bg-raised",
                     )}
                   >
@@ -104,6 +144,7 @@ export function Header({ theme }: { theme: Theme }) {
           </Dialog.Portal>
         </Dialog.Root>
       </div>
+      <span ref={bar} aria-hidden className="absolute inset-x-0 -bottom-px h-0.5 origin-left scale-x-0 bg-accent" />
     </header>
   );
 }

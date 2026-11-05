@@ -187,7 +187,6 @@ export function Hero() {
           Scroll
           <span className="hero-hint-line block h-8 w-px bg-accent" />
         </div>
-        <div aria-hidden className="hero-bar absolute inset-x-0 bottom-0 h-1 origin-left bg-accent" />
       </div>
     </section>
   );

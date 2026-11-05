@@ -3,22 +3,24 @@ import { company } from "@/content/company";
 import { products } from "@/content/products";
 import { projects } from "@/content/services";
 import { Logo, type LogoVariant } from "./logo";
+import { BackToTop, HyderabadClock } from "./footer-live";
 import type { Theme } from "./shell";
 
 const logoFor: Record<Theme, LogoVariant> = { brand: "magenta", products: "white", services: "indigo" };
 
 const list = "space-y-2 text-[0.95rem] text-muted";
-const link = "underline-offset-4 hover:text-ink hover:underline";
+const link = "flink hover:text-ink";
 
 export function Footer({ theme }: { theme: Theme }) {
   return (
-    <footer className="border-t border-line bg-surface">
-      <div className="wrap grid gap-10 py-14 md:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
+    <footer className="footer overflow-hidden border-t border-line bg-surface">
+      <div className="footer-cols wrap grid gap-10 py-14 md:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
         <div className="space-y-4">
           <Logo variant={logoFor[theme]} height={44} />
           <p className="measure text-[0.95rem] text-muted">
             AI and IoT products and projects from Hyderabad, for farms, health, safety, homes and learning.
           </p>
+          <HyderabadClock />
         </div>
 
         <nav aria-label="Products">
@@ -91,9 +93,12 @@ export function Footer({ theme }: { theme: Theme }) {
         </div>
       </div>
       <div className="border-t border-line">
-        <p className="wrap py-5 text-sm text-muted">
-          {company.legal}. {company.tagline}.
-        </p>
+        <div className="wrap flex items-center justify-between gap-4 py-5">
+          <p className="text-sm text-muted">
+            {company.legal}. {company.tagline}.
+          </p>
+          <BackToTop />
+        </div>
       </div>
     </footer>
   );

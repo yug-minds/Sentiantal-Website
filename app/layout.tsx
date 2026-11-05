@@ -23,6 +23,7 @@ const body = Atkinson_Hyperlegible_Next({
   variable: "--font-body",
   display: "swap",
   adjustFontFallback: false,
+  fallback: ["system-ui", "Arial", "sans-serif"],
 });
 
 // Only fetched when Telugu or Hindi text appears (the soil-report language switch).
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${kallisto.variable} ${body.variable} ${telugu.variable} ${devanagari.variable}`}
     >
       <body className="antialiased">{children}</body>
