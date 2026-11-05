@@ -1,11 +1,10 @@
-export type Fit = "farm" | "workplace" | "family" | "society" | "learning";
+export type Fit = "agriculture" | "healthcare" | "education" | "safety";
 
 export const fitLabels: Record<Fit, string> = {
-  farm: "Farm",
-  workplace: "Workplace",
-  family: "Family",
-  society: "Housing society",
-  learning: "Learning and hiring",
+  agriculture: "Agriculture",
+  healthcare: "Healthcare",
+  education: "Education",
+  safety: "Safety and industry",
 };
 
 export interface Product {
@@ -75,7 +74,7 @@ export const products: Product[] = [
       "Loan and relief workflows next to the soil data.",
       "A voice assistant that speaks the farmer's language.",
     ],
-    fits: ["farm"],
+    fits: ["agriculture"],
     glance: {
       builtFor: "Farmers, KVKs, labs, FPOs",
       youGet: "20-parameter soil report in 2 minutes and crop advice",
@@ -129,7 +128,7 @@ export const products: Product[] = [
       "A supervisor dashboard built for field teams.",
       "A device made for rough conditions, not only for the desk.",
     ],
-    fits: ["workplace", "family"],
+    fits: ["healthcare"],
     glance: {
       builtFor: "Families and industrial work teams",
       youGet: "Vitals, trends and alerts to the right person",
@@ -173,7 +172,7 @@ export const products: Product[] = [
       "Routes planned around where crime is reported.",
       "Direct alerts to police as well as family.",
     ],
-    fits: ["family", "workplace"],
+    fits: ["safety"],
     glance: {
       builtFor: "Women, campuses, cities and police teams",
       youGet: "Gesture and tag alerts to family and police",
@@ -218,7 +217,7 @@ export const products: Product[] = [
       "Delivery handling and complaint tracking in the same app.",
       "Pricing that mid-sized societies can afford.",
     ],
-    fits: ["society", "family"],
+    fits: ["safety"],
     glance: {
       builtFor: "Gated communities and their admins",
       youGet: "Visitor passes, bookings, notices, SOS and records",
@@ -267,7 +266,7 @@ export const products: Product[] = [
       "Coding checked by both AI and language-model review.",
       "Built to cost far less than separate assessment tools.",
     ],
-    fits: ["learning", "workplace"],
+    fits: ["education"],
     glance: {
       builtFor: "Students, job seekers, colleges and hiring teams",
       youGet: "Lessons, mock interviews, feedback and progress tracking",

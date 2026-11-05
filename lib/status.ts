@@ -41,7 +41,7 @@ export const soilLevel = (param: SoilParam, value: number, crop: Crop): "ok" | "
   return value >= lo && value <= hi ? "ok" : "attention";
 };
 
-// ---------- Vaaiu: PM2.5 bands (India CPCB breakpoints) ----------
+// ---------- VaAIu: PM2.5 bands (India CPCB breakpoints) ----------
 export const airBand = (pm25: number): { label: string; level: Level; index: number } => {
   if (pm25 <= 30) return { label: "Good", level: "ok", index: 0 };
   if (pm25 <= 60) return { label: "Satisfactory", level: "ok", index: 1 };

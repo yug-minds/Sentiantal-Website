@@ -42,6 +42,19 @@ export function ChainTabs({
       <Tabs.List aria-label={label} className="relative mx-auto w-full max-w-3xl" style={{ height: H }}>
         <svg aria-hidden viewBox={`0 0 100 ${H}`} preserveAspectRatio="none" className="absolute inset-0 size-full">
           <polyline points={points} fill="none" stroke="var(--line)" strokeWidth="3" vectorEffect="non-scaling-stroke" />
+          {/* The path already travelled fills in as you move along the chain. */}
+          <polyline
+            points={points}
+            fill="none"
+            stroke="var(--accent)"
+            strokeWidth="3"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+            pathLength={1}
+            strokeDasharray={1}
+            strokeDashoffset={1 - Math.max(0, items.findIndex((x) => x.key === value)) / Math.max(1, n - 1)}
+            style={{ transition: "stroke-dashoffset 0.6s cubic-bezier(0.3, 0.8, 0.3, 1)" }}
+          />
         </svg>
         {items.map((it, i) => {
           const active = it.key === value;
@@ -69,7 +82,7 @@ export function ChainTabs({
         })}
       </Tabs.List>
       {items.map((it) => (
-        <Tabs.Content key={it.key} value={it.key} className="mt-6">
+        <Tabs.Content key={it.key} value={it.key} className="try-panel mt-6">
           {it.panel}
         </Tabs.Content>
       ))}

@@ -4,6 +4,7 @@ import { Fields } from "@/components/home/fields";
 import { TryIt } from "@/components/home/try-it";
 import { ServiceProjects } from "@/components/home/projects";
 import { VisionMission } from "@/components/home/vision";
+import { GalleryStrip } from "@/components/gallery/gallery-strip";
 import { Partner } from "@/components/home/partner";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <TryIt />
       <ServiceProjects />
       <VisionMission />
+      <GalleryStrip />
       <Partner />
     </>
   );

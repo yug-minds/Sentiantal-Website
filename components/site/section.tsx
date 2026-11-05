@@ -18,7 +18,7 @@ export function Section({
         <h2 id={`${id ?? title}-h`.replace(/\s+/g, "-")} className="h2 lg:sticky lg:top-28 lg:self-start">
           {title}
         </h2>
-        <div>{children}</div>
+        <div className="min-w-0">{children}</div>
       </div>
     </section>
   );

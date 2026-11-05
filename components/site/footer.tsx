@@ -85,6 +85,9 @@ export function Footer({ theme }: { theme: Theme }) {
               <Link className={link} href="/about">
                 About
               </Link>
+              <Link className={link} href="/gallery">
+                Gallery
+              </Link>
               <Link className={link} href="/contact">
                 Contact
               </Link>

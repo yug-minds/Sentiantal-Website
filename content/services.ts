@@ -29,7 +29,7 @@ export const pipeline = [
     key: "sense",
     name: "Sense",
     body: "We pick sensors and write the firmware that reads them reliably in the field.",
-    example: "Vaaiu measures particles, gases, temperature and humidity in one small unit.",
+    example: "VaAIu measures particles, gases, temperature and humidity in one small unit.",
   },
   {
     key: "connect",
@@ -99,11 +99,11 @@ export const projects: Project[] = [
   },
   {
     slug: "vaaiu",
-    name: "Vaaiu",
+    name: "VaAIu",
     sector: "Air quality",
     line: "A compact monitor for indoor and outdoor air.",
     headline: "See the air you breathe, as it changes.",
-    sub: "Vaaiu is a compact IoT device that measures particles from PM1 to PM10, VOCs, NOx, CO2, temperature and humidity. It gives accurate, real-time readings for indoor and outdoor air.",
+    sub: "VaAIu is a compact IoT device that measures particles from PM1 to PM10, VOCs, NOx, CO2, temperature and humidity. It gives accurate, real-time readings for indoor and outdoor air.",
     glow: "#b6d6f6",
     arch: "/products/arch-vaaiu.jpg",
     features: [

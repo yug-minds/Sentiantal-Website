@@ -16,14 +16,17 @@ const wings = [
   { href: "/services", label: "Services", dot: "#967fd2" },
 ] as const;
 
+const home = { href: "/", label: "Home" } as const;
+
 const plain = [
   { href: "/about", label: "About" },
+  { href: "/gallery", label: "Gallery" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
 export function Header({ theme }: { theme: Theme }) {
   const pathname = usePathname();
-  const current = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  const current = (href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/"));
   const bar = useRef<HTMLSpanElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [glide, setGlide] = useState({ x: 0, w: 0, show: false });
@@ -67,6 +70,21 @@ export function Header({ theme }: { theme: Theme }) {
             className="nav-glide pointer-events-none absolute top-1/2 h-9 -translate-y-1/2 rounded-full bg-raised"
             style={{ left: glide.x, width: glide.w, opacity: glide.show ? 1 : 0 }}
           />
+          {[home].map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              aria-current={current(l.href) ? "page" : undefined}
+              onPointerEnter={moveGlide}
+              onFocus={moveGlide}
+              className={clsx(
+                "relative rounded-full px-4 py-2 font-display text-sm font-medium",
+                current(l.href) && "underline decoration-2 underline-offset-8",
+              )}
+            >
+              {l.label}
+            </Link>
+          ))}
           <div className="flex rounded-full border border-line p-1">
             {wings.map((w) => (
               <Link
@@ -125,7 +143,7 @@ export function Header({ theme }: { theme: Theme }) {
               >
                 <X aria-hidden size={20} />
               </Dialog.Close>
-              {[...wings, ...plain].map((l, i) => (
+              {[home, ...wings, ...plain].map((l, i) => (
                 <Dialog.Close asChild key={l.href}>
                   <Link
                     href={l.href}

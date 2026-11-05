@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/services",
     ...projects.map((p) => `/services/${p.slug}`),
     "/about",
+    "/gallery",
     "/contact",
   ];
   return paths.map((p) => ({ url: `${base}${p}` }));
