@@ -53,3 +53,9 @@ Each route group wraps its pages in `Shell` with a theme: `brand`, `products` or
 - Body font is Atkinson Hyperlegible Next. Noto Sans Telugu and Devanagari load only when that text appears (the soil-report language switch).
 - Product arch images were cropped from the product deck PDF. Replace them with original device renders when available (same file names).
 - Telugu and Hindi strings in `components/demos/soil-test.tsx` need review by a native speaker.
+
+## Deploying to Vercel
+
+1. Import the GitHub repo in Vercel. The framework (Next.js) and the build command are detected, no settings to change.
+2. Add these environment variables (Production, and Preview if you want the form to work there): `RESEND_API_KEY`, `ENQUIRY_TO`, `ENQUIRY_FROM`. See `.env.example`.
+3. Add the domain `www.sentiantal.com`. Canonical URLs, the sitemap and `robots.txt` already point there.
