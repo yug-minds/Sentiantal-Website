@@ -14,7 +14,7 @@ export function Fields() {
   return (
     <section className="wrap py-16 md:py-24" aria-labelledby="fields-h">
       <div className="mb-10 max-w-2xl">
-        <h2 id="fields-h" className="display-l">We work in four fields.</h2>
+        <h2 id="fields-h" className="display-l reveal">We work in four fields.</h2>
         <p className="lead mt-4 text-muted">Pick one to see what we have built for it.</p>
       </div>
       <ChainTabs

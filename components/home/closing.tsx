@@ -8,7 +8,7 @@ export function ServiceProjects() {
     <section className="wrap py-16 md:py-24" aria-labelledby="projects-h">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
         <div>
-          <h2 id="projects-h" className="display-l">Built for other teams.</h2>
+          <h2 id="projects-h" className="display-l reveal">Built for other teams.</h2>
           <p className="lead mt-4 text-muted">We also design and build AI and IoT systems to a customer’s brief. Here are four.</p>
           <Link href="/services" className={btn("ghost", "mt-8")}>
             See our services
@@ -53,7 +53,7 @@ export function Partner() {
   return (
     <section className="wrap py-16 md:py-24" aria-labelledby="partner-h">
       <div className="max-w-3xl">
-        <h2 id="partner-h" className="display-l">We’re looking for partners to take these further.</h2>
+        <h2 id="partner-h" className="display-l reveal">We’re looking for partners to take these further.</h2>
         <p className="lead mt-4 text-muted">Tell us where you can help, and we will take it from there.</p>
         <ul className="mt-8 flex flex-wrap gap-3">
           {partnerTopics.map((t) => (

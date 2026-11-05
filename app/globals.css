@@ -308,3 +308,84 @@
     height: 5.5rem;
   }
 }
+
+/* ---------- Home hero: driven by --p (0..1) set from scroll ---------- */
+.hero {
+  --p: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    --p: 1;
+  }
+}
+.hero-line-a {
+  opacity: clamp(0.18, calc(1 - var(--p) * 1.5), 1);
+}
+.hero-line-b {
+  opacity: clamp(0.18, calc(0.18 + var(--p) * 2.4), 1);
+}
+.hero-lead {
+  opacity: clamp(0, calc(1 - var(--p) * 4), 1);
+}
+.hero-cta {
+  opacity: clamp(0, calc(1 - var(--p) * 4), 1);
+}
+.hero-hint {
+  opacity: clamp(0, calc(1 - var(--p) * 10), 1);
+}
+.hero-hint-line {
+  transform-origin: top;
+  animation: hint 1.8s ease-in-out infinite;
+}
+@keyframes hint {
+  0% { transform: scaleY(0); }
+  60% { transform: scaleY(1); transform-origin: top; }
+  61% { transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.hero-bar {
+  transform: scaleX(var(--p));
+}
+.hero-phone {
+  background: var(--ink);
+  padding: 0;
+  box-shadow: 0 0 0 1px var(--line);
+  opacity: clamp(0, calc((var(--p) - 0.4) * 5), 1);
+  scale: calc(0.92 + 0.08 * clamp(0, calc((var(--p) - 0.4) * 3), 1));
+}
+.hero-row {
+  opacity: clamp(0, calc((var(--p) - 0.55 - var(--i) * 0.07) * 8), 1);
+  translate: 0 calc((1 - clamp(0, calc((var(--p) - 0.55 - var(--i) * 0.07) * 8), 1)) * 14px);
+}
+.hero-rise {
+  animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes rise {
+  from { transform: translateY(105%); }
+  to { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-line-a, .hero-line-b { opacity: 1; }
+  .hero-lead, .hero-cta { opacity: 1; }
+  .hero-hint, .hero-bar { display: none; }
+}
+
+/* ---------- Scroll reveals: native scroll-driven animation, ignored where unsupported ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .wing-body {
+      animation: wing-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+    .reveal {
+      animation: wing-in linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 45%;
+    }
+    @keyframes wing-in {
+      from { opacity: 0; translate: 0 2.5rem; }
+      to { opacity: 1; translate: 0 0; }
+    }
+  }
+}

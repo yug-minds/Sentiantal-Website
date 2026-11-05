@@ -14,7 +14,7 @@ export function TryIt() {
     <section className="bg-raised py-16 md:py-24" aria-labelledby="try-h">
       <div className="wrap">
         <div className="mb-8 max-w-2xl">
-          <h2 id="try-h" className="display-l">See how they respond.</h2>
+          <h2 id="try-h" className="display-l reveal">See how they respond.</h2>
           <p className="lead mt-4 text-muted">Three live samples from our products. Change a setting and watch the result.</p>
         </div>
         <Tabs.Root defaultValue="soil">
