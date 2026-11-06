@@ -1054,3 +1054,29 @@ section[id] {
 @media (prefers-reduced-motion: reduce) {
   .live-chip { animation: none; }
 }
+
+/* ---------- Loco-pilot display and LED ---------- */
+.lcd {
+  box-shadow: inset 0 0 14px rgba(0, 20, 120, 0.6), 0 0 18px -6px #3d7bff;
+}
+.lcd-text {
+  margin: 0;
+  color: #fff;
+  font: 600 clamp(0.62rem, 1.5vw, 0.85rem) / 1.35 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  letter-spacing: 0.04em;
+  white-space: pre;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.55);
+}
+.lcd-over .lcd-text {
+  font-size: clamp(0.5rem, 1.45vw, 0.72rem);
+}
+.loco-led {
+  animation: loco-led 0.9s ease-in-out infinite;
+}
+@keyframes loco-led {
+  0%, 100% { opacity: 0.35; box-shadow: none; }
+  50% { opacity: 1; box-shadow: 0 0 14px 4px #5cb8ff; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loco-led { animation: none; opacity: 1; }
+}

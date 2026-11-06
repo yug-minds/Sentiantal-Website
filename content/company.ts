@@ -4,7 +4,7 @@ export const company = {
   tagline: "Transforming the Insights",
   email: "contact@sentiantal.com",
   website: "www.sentiantal.com",
-  phoneIndia: "+91 7382426562",
+  phoneIndia: "+91 9493690202",
   phoneGlobal: "+91 97056 90202",
   whatsapp: "919705690202",
   social: "@sentiantal",

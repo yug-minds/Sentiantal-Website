@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Accordion } from "radix-ui";
 import { projects } from "@/content/services";
 import { btn } from "@/components/ui/button";
+import { LocoSample } from "@/components/services/loco";
 
 /** Sample readings, shown only to give each project a face. Loco-pilot has no content yet, so no reading. */
 const sample: Record<string, string> = {
@@ -69,6 +70,12 @@ export function ServiceProjects() {
                         See {p.name}
                       </Link>
                     </div>
+                    {p.slug === "loco-pilot-data-device" && (
+                      <figure className="w-56" aria-label="Sample display">
+                        <LocoSample className="w-full" />
+                        <figcaption className="mt-1 text-sm text-muted">Display while writing data</figcaption>
+                      </figure>
+                    )}
                     {sample[p.slug] && (
                       <figure className="w-44" aria-label="Sample reading">
                         <svg viewBox="0 0 160 44" className="proj-spark h-11 w-full" aria-hidden>

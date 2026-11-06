@@ -68,6 +68,8 @@ export interface Project {
   glow: string;
   /** Arch image from the product deck, where one exists */
   arch?: string;
+  /** Cut-out product shot (transparent PNG) for projects with no deck image */
+  device?: string;
   features: string[];
   why: string[];
   stub?: boolean;
@@ -149,6 +151,7 @@ export const projects: Project[] = [
     headline: "A data storage device for loco pilots.",
     sub: "Project details are available on request. Tell us what you need and we will share what we can.",
     glow: "#6b7a99",
+    device: "/products/loco-pilot-device.png",
     features: [],
     why: [],
     stub: true,

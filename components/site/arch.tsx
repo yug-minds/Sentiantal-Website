@@ -4,6 +4,7 @@ import clsx from "clsx";
 /** The deck's signature frame: a tall arch with the device lit in its own colour. */
 export function Arch({
   src,
+  device,
   alt,
   glow,
   art,
@@ -12,6 +13,8 @@ export function Arch({
   priority,
 }: {
   src?: string;
+  /** A cut-out product shot, drawn over the art background instead of filling the arch. */
+  device?: string;
   alt: string;
   glow: string;
   art?: "pond" | "rail";
@@ -26,6 +29,11 @@ export function Arch({
     >
       {src ? (
         <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className="object-cover" />
+      ) : device ? (
+        <>
+          <ArchArt kind={art ?? "rail"} glow={glow} label="" />
+          <Image src={device} alt={alt} width={480} height={958} sizes={sizes} priority={priority} className="absolute inset-x-[24%] bottom-[7%] w-[52%] drop-shadow-[0_24px_30px_rgba(0,0,0,0.5)]" />
+        </>
       ) : (
         <ArchArt kind={art ?? "pond"} glow={glow} label={alt} />
       )}

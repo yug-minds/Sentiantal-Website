@@ -2,6 +2,7 @@
 
 import { airBand } from "@/lib/status";
 import { LevelChip, useJitter } from "@/components/demos/parts";
+import { LocoSample } from "./loco";
 
 /** A live-looking sample reading for a project. Values are simulated. */
 export function Readout({ slug, small }: { slug: string; small?: boolean }) {
@@ -28,6 +29,13 @@ export function Readout({ slug, small }: { slug: string; small?: boolean }) {
       <>
         <p className={`font-display font-bold tabular-nums ${big}`}>{o2.toFixed(1)} <span className="text-xl font-medium text-muted">mg/L oxygen</span></p>
         <p className="mt-3"><LevelChip level="ok" label="Green" /></p>
+      </>
+    );
+  if (slug === "loco-pilot-data-device")
+    return (
+      <>
+        <LocoSample className={small ? "w-52" : "w-72"} />
+        <p className="mt-3 text-muted">Display while writing train data</p>
       </>
     );
   return <p className="font-display text-2xl font-bold">Details on request</p>;

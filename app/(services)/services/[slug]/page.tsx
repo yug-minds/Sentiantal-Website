@@ -64,17 +64,16 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
           {[0, 1, 2].map((r) => (
             <span key={r} aria-hidden className="pring pointer-events-none absolute inset-x-6 bottom-10 -z-10 aspect-square rounded-full border-2" style={{ animationDelay: `${r * 1.2}s`, borderColor: p.glow }} />
           ))}
-          {!p.stub && (
-            <div className="live-chip absolute -left-3 bottom-14 z-10 rounded-2xl border border-line bg-surface p-4 shadow-[0_20px_40px_-20px_rgba(25,9,16,0.4)] sm:-left-10">
+          <div className="live-chip absolute -left-3 bottom-14 z-10 rounded-2xl border border-line bg-surface p-4 shadow-[0_20px_40px_-20px_rgba(25,9,16,0.4)] sm:-left-10">
               <p className="mb-1 flex items-center gap-2 text-xs text-muted"><span aria-hidden className="live-dot size-2 rounded-full bg-good" />Sample reading</p>
               <Readout slug={p.slug} small />
             </div>
-          )}
           <div className="parch">
             <Arch
               src={p.arch}
+              device={p.device}
               art={p.slug === "aquaai" ? "pond" : "rail"}
-              alt={p.slug === "aquaai" ? "Pond with ripples" : p.slug === "loco-pilot-data-device" ? "Railway tracks" : `${p.name} device`}
+              alt={p.slug === "aquaai" ? "Pond with ripples" : p.device ? "The loco-pilot data storage device, a white unit with a small blue display" : `${p.name} device`}
               glow={p.glow}
               className="w-full"
               priority
@@ -83,10 +82,12 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
         </div>
       </section>
 
-      {!p.stub && (
+      {demoFor(p.slug) && (
         <>
-          <ProductNav items={[{ id: "try", label: "Try it" }, { id: "features", label: "What it does" }, { id: "why", label: "Why it matters" }, { id: "path", label: "How it runs" }]} />
+          {!p.stub && <ProductNav items={[{ id: "try", label: "Try it" }, { id: "features", label: "What it does" }, { id: "why", label: "Why it matters" }, { id: "path", label: "How it runs" }]} />}
           <Section id="try" title="Try it"><div className="try-stage">{demoFor(p.slug)}</div></Section>
+          {!p.stub && (
+            <>
           <Section id="features" title="What it does">
             <ul className="grid gap-3 sm:grid-cols-2">
               {p.features.map((t, k) => (
@@ -108,6 +109,8 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
             </ul>
           </Section>
           <Section id="path" title="How a project like this runs"><ProjectPath /></Section>
+            </>
+          )}
         </>
       )}
 
@@ -136,7 +139,11 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
           </div>
           <Link href={`/services/${next.slug}`} className="pnext group flex items-center gap-5 rounded-3xl border border-line bg-ground p-5 transition-colors hover:border-accent">
             <span className="relative block h-28 w-[4.5rem] shrink-0 overflow-hidden rounded-t-full" style={{ background: `linear-gradient(160deg, ${next.glow}, var(--raised))` }}>
-              {next.arch && <Image src={next.arch} alt="" fill sizes="72px" className="object-cover transition-transform duration-500 group-hover:scale-110" />}
+              {next.arch ? (
+                <Image src={next.arch} alt="" fill sizes="72px" className="object-cover transition-transform duration-500 group-hover:scale-110" />
+              ) : next.device ? (
+                <Image src={next.device} alt="" fill sizes="72px" className="object-contain p-3 transition-transform duration-500 group-hover:scale-110" />
+              ) : null}
             </span>
             <span>
               <span className="text-sm text-muted">Next project</span>
