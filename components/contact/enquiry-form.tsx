@@ -70,7 +70,7 @@ export function EnquiryForm() {
     );
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-6" aria-describedby={state === "failed" ? "form-fail" : undefined}>
+    <form onSubmit={onSubmit} noValidate className="space-y-5 sm:space-y-6" aria-describedby={state === "failed" ? "form-fail" : undefined}>
       <div>
         <p id="intent-label" className={labelCls}>I want to</p>
         <ToggleGroup.Root
@@ -78,13 +78,13 @@ export function EnquiryForm() {
           value={intent}
           onValueChange={(v) => v && setIntent(v as Intent)}
           aria-labelledby="intent-label"
-          className="flex flex-wrap gap-2"
+          className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"
         >
           {intents.map((i) => (
             <ToggleGroup.Item
               key={i.key}
               value={i.key}
-              className="rounded-full border border-line px-5 py-2.5 font-display text-sm font-medium transition-colors hover:bg-raised data-[state=on]:border-accent data-[state=on]:bg-accent data-[state=on]:text-on-accent"
+              className="rounded-2xl border border-line px-3 py-3 text-center font-display text-sm font-medium leading-tight transition-colors sm:rounded-full sm:px-5 sm:py-2.5 hover:bg-raised data-[state=on]:border-accent data-[state=on]:bg-accent data-[state=on]:text-on-accent"
             >
               {i.label}
             </ToggleGroup.Item>
@@ -92,7 +92,7 @@ export function EnquiryForm() {
         </ToggleGroup.Root>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
         <div>
           <label htmlFor="name" className={labelCls}>Name</label>
           <input id="name" name="name" autoComplete="name" required className={field} aria-invalid={!!errors.name} aria-describedby={errors.name ? "name-err" : undefined} />
@@ -172,7 +172,7 @@ export function EnquiryForm() {
 
       <div>
         <label htmlFor="message" className={labelCls}>Message</label>
-        <textarea id="message" name="message" rows={6} required className={field} aria-invalid={!!errors.message} aria-describedby={errors.message ? "message-err" : undefined} />
+        <textarea id="message" name="message" rows={5} required className={field} aria-invalid={!!errors.message} aria-describedby={errors.message ? "message-err" : undefined} />
         {errors.message && <p id="message-err" className="mt-1 text-sm text-bad">{errors.message}</p>}
       </div>
 
@@ -190,7 +190,7 @@ export function EnquiryForm() {
         </p>
       )}
 
-      <button type="submit" className={btn("primary")} disabled={state === "sending"}>
+      <button type="submit" className={btn("primary", "w-full sm:w-auto")} disabled={state === "sending"}>
         {state === "sending" ? "Sending…" : "Send message"}
       </button>
     </form>

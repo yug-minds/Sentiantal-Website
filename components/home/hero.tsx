@@ -40,13 +40,14 @@ export function Hero() {
 
     const measure = () => {
       const r = cv.getBoundingClientRect();
-      dpr = Math.min(devicePixelRatio || 1, 2);
+      const w0 = r.width;
+      dpr = Math.min(devicePixelRatio || 1, w0 < 768 ? 1.5 : 2);
       w = r.width; h = r.height;
       cv.width = w * dpr; cv.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const pr = phone.current!.getBoundingClientRect();
       box = { cx: pr.left - r.left + pr.width / 2, cy: pr.top - r.top + pr.height / 2, a: pr.width / 2 + 10, b: pr.height / 2 + 10 };
-      const n = w < 768 ? 46 : 96;
+      const n = w < 768 ? 34 : 96;
       nodes = Array.from({ length: n }, (_, i) => ({
         x: Math.random() * w, y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
@@ -63,6 +64,7 @@ export function Hero() {
 
     const frame = (now: number) => {
       const dt = Math.min((now - last) / 16.7, 3); last = now;
+      el.style.setProperty("--p", p.toFixed(4));
       ctx.clearRect(0, 0, w, h);
       const k = ease(Math.min(1, p * 1.7)); // fully gathered by ~60% scroll
       const pos = nodes.map((n) => {
@@ -79,8 +81,9 @@ export function Hero() {
       ctx.lineWidth = 1;
       for (let i = 0; i < pos.length; i++) {
         for (let j = i + 1; j < pos.length; j++) {
-          const dx = pos[i].x - pos[j].x, dy = pos[i].y - pos[j].y, d = Math.hypot(dx, dy);
-          if (d < 120) {
+          const dx = pos[i].x - pos[j].x, dy = pos[i].y - pos[j].y, d2 = dx * dx + dy * dy;
+          if (d2 < 14400) {
+            const d = Math.sqrt(d2);
             ctx.strokeStyle = `rgba(25,9,16,${(1 - d / 120) * (0.16 + 0.2 * k)})`;
             ctx.beginPath(); ctx.moveTo(pos[i].x, pos[i].y); ctx.lineTo(pos[j].x, pos[j].y); ctx.stroke();
           }
@@ -107,14 +110,23 @@ export function Hero() {
     const onScroll = () => {
       const r = el.getBoundingClientRect();
       p = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight + 72)));
-      el.style.setProperty("--p", p.toFixed(4));
     };
     const onMove = (e: PointerEvent) => {
       const r = cv.getBoundingClientRect();
       ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top;
     };
     const onLeave = () => { ptr.x = ptr.y = -999; };
-    const onResize = () => { measure(); if (reduced) frame(performance.now()); };
+    let lastW = innerWidth;
+    const onResize = () => { if (innerWidth === lastW) return; lastW = innerWidth; measure(); if (reduced) frame(performance.now()); };
+
+    // Stop drawing once the hero has scrolled out of view.
+    let live = true;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting === live) return;
+      live = e.isIntersecting;
+      if (live && !reduced) { last = performance.now(); raf = requestAnimationFrame(frame); } else cancelAnimationFrame(raf);
+    });
+    io.observe(el);
 
     measure();
     if (reduced) frame(performance.now());
@@ -123,7 +135,7 @@ export function Hero() {
     el.addEventListener("pointermove", onMove);
     el.addEventListener("pointerleave", onLeave);
     return () => {
-      cancelAnimationFrame(raf);
+      io.disconnect(); cancelAnimationFrame(raf);
       removeEventListener("scroll", onScroll); removeEventListener("resize", onResize);
       el.removeEventListener("pointermove", onMove); el.removeEventListener("pointerleave", onLeave);
     };
@@ -154,10 +166,10 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="relative flex justify-center md:justify-end md:pr-6">
+          <div className="flex justify-center max-md:absolute max-md:inset-x-0 max-md:bottom-8 md:relative md:justify-end md:pr-6">
             <div
               ref={phone}
-              className="hero-phone relative aspect-[9/17] h-[min(44svh,28rem)] rounded-[2rem] md:h-[min(68svh,34rem)]"
+              className="hero-phone relative aspect-[9/17] h-[min(50svh,27rem)] rounded-[2rem] md:h-[min(68svh,34rem)]"
             >
               <div className="hero-screen absolute inset-[6px] flex flex-col gap-2 overflow-hidden rounded-[1.6rem] bg-surface p-3 shadow-[0_20px_60px_-20px_rgba(25,9,16,0.5)]">
                 <p className="font-display text-xs font-medium text-muted">Today, from your sensors</p>

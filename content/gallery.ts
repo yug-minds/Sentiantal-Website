@@ -35,10 +35,10 @@ export interface GalleryItem {
 }
 
 export const gallery: GalleryItem[] = [
+  { id: "p2", category: "field", src: "/field/farm-visit.jpg", alt: "Sentiantal team talking with a farmer in a field about the soil tester", caption: "Talking with a farmer about the soil tester", ratio: "16 / 9" },
+  { id: "p6", category: "field", src: "/field/agripilot.jpg", alt: "Two people testing soil samples with the SARAM device and a laptop at an agri expo", caption: "Testing soil samples with SARAM at an agri expo", ratio: "3 / 2" },
   { id: "p1", category: "leaders", alt: "Placeholder for a photo with a guest", caption: "Caption for this photo", people: "Name and title of the guest", place: "Place", date: "Month Year", ratio: "4 / 5" },
-  { id: "p2", category: "field", alt: "Placeholder for a field photo", caption: "Caption for this photo", place: "Place", ratio: "3 / 2" },
   { id: "p3", category: "events", alt: "Placeholder for an event photo", caption: "Caption for this photo", place: "Place", date: "Month Year", ratio: "3 / 2" },
   { id: "p4", category: "recognition", alt: "Placeholder for an award photo", caption: "Caption for this photo", people: "Name and title", ratio: "4 / 5" },
   { id: "p5", category: "leaders", alt: "Placeholder for a photo with a guest", caption: "Caption for this photo", people: "Name and title of the guest", ratio: "1 / 1" },
-  { id: "p6", category: "field", alt: "Placeholder for a field photo", caption: "Caption for this photo", place: "Place", ratio: "4 / 3" },
 ];

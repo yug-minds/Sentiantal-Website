@@ -1,5 +1,7 @@
-// POST /api/enquiry. Validates the form and emails it through Resend's HTTP API.
+// POST /api/enquiry. Validates the form and emails it over SMTP (GoDaddy mailbox).
 // ponytail: no rate limit and no queue. Add one if the form starts to attract spam.
+import nodemailer from "nodemailer";
+import { enquiryReply } from "@/lib/enquiry-reply";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const clean = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -33,9 +35,10 @@ export async function POST(request: Request) {
   if (f.message.length < 10) errors.message = "Tell us a little more, at least a sentence.";
   if (Object.keys(errors).length) return Response.json({ error: "validation", errors }, { status: 422 });
 
-  const key = process.env.RESEND_API_KEY;
-  const to = process.env.ENQUIRY_TO;
-  if (!key || !to) return Response.json({ error: "not_configured" }, { status: 503 });
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  const to = process.env.ENQUIRY_TO ?? user;
+  if (!user || !pass || !to) return Response.json({ error: "not_configured" }, { status: 503 });
 
   const line = (label: string, v: string) => (v ? `${label}: ${v}` : null);
   const text = [
@@ -53,18 +56,27 @@ export async function POST(request: Request) {
     .filter((l): l is string => l !== null)
     .join("\n");
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from: process.env.ENQUIRY_FROM ?? "Sentiantal website <onboarding@resend.dev>",
-      to: to.split(",").map((s) => s.trim()),
-      reply_to: f.email,
+  const transport = nodemailer.createTransport({
+    host: process.env.SMTP_HOST ?? "smtpout.secureserver.net",
+    port: 465,
+    secure: true,
+    auth: { user, pass },
+  });
+  try {
+    await transport.sendMail({
+      from: `Sentiantal website <${user}>`,
+      to,
+      replyTo: f.email,
       subject: `Website enquiry: ${f.intent} from ${f.name}`,
       text,
-    }),
-  });
+    });
+  } catch {
+    return Response.json({ error: "send_failed" }, { status: 502 });
+  }
 
-  if (!res.ok) return Response.json({ error: "send_failed" }, { status: 502 });
+  // Confirmation to the visitor. The team already has the enquiry, so a failure here is not shown to them.
+  try {
+    await transport.sendMail({ from: `Sentiantal <${user}>`, to: f.email, replyTo: user, ...enquiryReply(f) });
+  } catch {}
   return Response.json({ ok: true });
 }

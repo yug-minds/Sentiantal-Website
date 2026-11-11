@@ -8,14 +8,14 @@ import type { Theme } from "./shell";
 
 const logoFor: Record<Theme, LogoVariant> = { brand: "magenta", products: "white", services: "indigo" };
 
-const list = "space-y-2 text-[0.95rem] text-muted";
+const list = "space-y-2.5 text-[0.9rem] text-muted md:space-y-2 md:text-[0.95rem]";
 const link = "flink hover:text-ink";
 
 export function Footer({ theme }: { theme: Theme }) {
   return (
     <footer className="footer overflow-hidden border-t border-line bg-surface">
-      <div className="footer-cols wrap grid gap-10 py-14 md:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
-        <div className="space-y-4">
+      <div className="footer-cols wrap grid grid-cols-2 gap-x-6 gap-y-9 py-10 md:grid-cols-[1.3fr_1fr_1fr_1.2fr] md:gap-10 md:py-14">
+        <div className="col-span-2 space-y-4 md:col-span-1">
           <Logo variant={logoFor[theme]} height={44} />
           <p className="measure text-[0.95rem] text-muted">
             AI and IoT products and projects from Hyderabad, for farms, health, safety, homes and learning.
@@ -24,7 +24,7 @@ export function Footer({ theme }: { theme: Theme }) {
         </div>
 
         <nav aria-label="Products">
-          <h2 className="h3 mb-3">Products</h2>
+          <h2 className="h3 mb-2 md:mb-3">Products</h2>
           <ul className={list}>
             {products.map((p) => (
               <li key={p.slug}>
@@ -37,7 +37,7 @@ export function Footer({ theme }: { theme: Theme }) {
         </nav>
 
         <nav aria-label="Services">
-          <h2 className="h3 mb-3">Services</h2>
+          <h2 className="h3 mb-2 md:mb-3">Services</h2>
           <ul className={list}>
             <li>
               <Link className={link} href="/services">
@@ -54,8 +54,8 @@ export function Footer({ theme }: { theme: Theme }) {
           </ul>
         </nav>
 
-        <div>
-          <h2 className="h3 mb-3">Talk to us</h2>
+        <div className="col-span-2 md:col-span-1">
+          <h2 className="h3 mb-2 md:mb-3">Talk to us</h2>
           <ul className={list}>
             <li>
               <a className={link} href={`mailto:${company.email}`}>
@@ -76,12 +76,12 @@ export function Footer({ theme }: { theme: Theme }) {
             </li>
             <li>
               {company.address.lines.map((l) => (
-                <span key={l} className="block">
+                <span key={l} className="inline after:content-[',_'] last:after:content-none md:block md:after:content-none">
                   {l}
                 </span>
               ))}
             </li>
-            <li className="flex gap-4 pt-2">
+            <li className="flex gap-5 pt-2 font-display text-ink">
               <Link className={link} href="/about">
                 About
               </Link>

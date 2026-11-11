@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { GraduationCap, HeartPulse, ShieldCheck, Sprout, User } from "lucide-react";
+import { ReadMore } from "@/components/about/read-more";
 import { LitText } from "@/components/site/lit-text";
 import { btn } from "@/components/ui/button";
 import { company, directorMessage, fields, team, type FieldKey } from "@/content/company";
@@ -29,18 +30,18 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero: headline rises line by line; a farm photo sits in the brand's arch and drifts as you scroll. */}
-      <section className="wrap grid items-center gap-10 pb-16 pt-12 md:pt-16 lg:grid-cols-[1.5fr_1fr]" aria-label="About Sentiantal">
+      <section className="wrap grid items-center gap-8 pb-12 pt-8 sm:gap-10 sm:pb-16 md:pt-16 lg:grid-cols-[1.5fr_1fr]" aria-label="About Sentiantal">
         <div>
-          <h1 className="display-xl">
+          <h1 className="display-xl max-sm:text-[clamp(1.75rem,8.6vw,2.5rem)]">
             {headline.map((l, i) => (
               <span key={l} className="block overflow-hidden pb-[0.12em]">
                 <span className="hero-rise block" style={{ animationDelay: `${0.1 + i * 0.15}s` }}>{l}</span>
               </span>
             ))}
           </h1>
-          <p className="lead enter-copy mt-5 max-w-xl text-muted">{company.weDo}</p>
+          <p className="lead enter-copy mt-4 max-w-xl text-muted max-sm:text-lg sm:mt-5">{company.weDo}</p>
         </div>
-        <div className="about-arch relative mx-auto aspect-[3/4] w-full max-w-xs overflow-hidden rounded-t-[999px] shadow-[0_30px_60px_-30px_rgba(25,9,16,0.45)]">
+        <div className="about-arch relative mx-auto aspect-[4/5] w-full max-w-[15rem] overflow-hidden sm:aspect-[3/4] sm:max-w-xs rounded-t-[999px] shadow-[0_30px_60px_-30px_rgba(25,9,16,0.45)]">
           <Image
             src="/field/farm-visit.jpg"
             alt="Sentiantal team talking with a farmer in a field"
@@ -67,25 +68,33 @@ export default function AboutPage() {
       {/* Director's message. Shows once the text is added to content/company.ts. */}
       {hasMessage ? (
         <section className="border-t border-line bg-raised" aria-labelledby="msg-h">
-          <div className="wrap grid gap-10 py-16 md:py-24 lg:grid-cols-[1fr_2fr] lg:gap-16">
-            <div className="reveal lg:sticky lg:top-28 lg:self-start">
+          <div className="wrap grid gap-12 py-16 md:py-24 lg:grid-cols-[5fr_7fr] lg:gap-20">
+            <figure className="reveal flex items-end gap-6 lg:sticky lg:top-28 lg:block lg:w-full lg:max-w-sm lg:self-start">
               {/* Portrait. Shows a placeholder until a photo path is set in directorMessage.image. */}
-              <div className="relative grid h-56 w-44 place-items-center overflow-hidden rounded-t-[999px] border border-line bg-surface text-muted">
-                {directorMessage.image ? (
-                  <Image src={directorMessage.image} alt={`Portrait of ${directorMessage.by}`} fill sizes="176px" className="object-cover" />
-                ) : (
-                  <User aria-hidden size={64} strokeWidth={1.25} />
-                )}
+              <div className="relative w-32 shrink-0 sm:w-40 lg:w-full">
+                <div aria-hidden className="absolute inset-0 translate-x-2.5 translate-y-2.5 rounded-t-[999px] border-2 border-accent lg:translate-x-5 lg:translate-y-5" />
+                <div className="relative grid aspect-[4/5] place-items-center overflow-hidden rounded-t-[999px] bg-surface text-muted">
+                  {directorMessage.image ? (
+                    <Image src={directorMessage.image} alt={`Portrait of ${directorMessage.by}`} fill sizes="(min-width: 1024px) 30vw, 384px" className="object-cover object-top" />
+                  ) : (
+                    <User aria-hidden size={64} strokeWidth={1.25} />
+                  )}
+                </div>
               </div>
-              <h2 id="msg-h" className="h2 mt-6">Message from the director</h2>
-              <p className="mt-2 font-display font-medium">{directorMessage.by}</p>
-              <p className="text-muted">{directorMessage.role}</p>
-            </div>
+              <figcaption className="pb-2 lg:mt-10 lg:pb-0">
+                <p className="font-display text-xl font-medium">{directorMessage.by}</p>
+                <p className="text-muted">{directorMessage.role}</p>
+              </figcaption>
+            </figure>
             <div className="relative">
-              <span aria-hidden className="absolute -left-2 -top-10 font-display text-[8rem] font-black leading-none text-accent/20 md:-left-8">“</span>
-              <div className="relative max-w-3xl space-y-6 text-lg md:text-xl">
-                {directorMessage.paragraphs.map((t) => <p key={t} className="reveal">{t}</p>)}
+              <h2 id="msg-h" className="h2 reveal max-md:text-3xl">Message from the director</h2>
+              <div className="relative mt-8 md:mt-10">
+                <span aria-hidden className="absolute -top-4 left-0 font-display text-[5rem] md:-top-6 md:text-[7rem] font-black leading-none text-accent/20 md:-left-2">“</span>
+                <p className="reveal relative pt-10 font-display text-xl font-light leading-snug sm:text-2xl md:pt-14 md:text-3xl">{directorMessage.paragraphs[0]}</p>
               </div>
+              <ReadMore className="mt-6 max-w-2xl space-y-4 border-l-2 border-accent/40 pl-5 text-base text-muted md:mt-8 md:space-y-5 md:pl-6 md:text-xl">
+                {directorMessage.paragraphs.slice(1).map((t) => <p key={t} className="reveal">{t}</p>)}
+              </ReadMore>
             </div>
           </div>
         </section>

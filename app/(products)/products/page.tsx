@@ -30,25 +30,29 @@ export default function ProductsPage() {
       <section className="wrap pb-16 md:pb-24" aria-labelledby="glance-h">
         <h2 id="glance-h" className="h2 mb-6">At a glance</h2>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[44rem] text-left">
-            <thead>
+          <table className="w-full text-left md:min-w-[44rem] max-md:block">
+            <thead className="max-md:sr-only">
               <tr className="border-b border-line font-display text-sm">
                 {["Product", "Built for", "What you get", "Delivered as"].map((h) => (
                   <th key={h} scope="col" className="py-3 pr-6 font-medium">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="max-md:block">
               {products.map((p) => (
-                <tr key={p.slug} className="reveal border-b border-line/70 align-top transition-colors hover:bg-raised">
-                  <th scope="row" className="py-4 pr-6 text-left font-normal">
+                <tr
+                  key={p.slug}
+                  className="reveal border-b border-line/70 align-top transition-colors hover:bg-raised max-md:mb-4 max-md:block max-md:rounded-2xl max-md:border max-md:border-l-4 max-md:bg-surface max-md:p-5"
+                  style={{ borderLeftColor: p.glow }}
+                >
+                  <th scope="row" className="py-4 pr-6 text-left font-normal max-md:block max-md:pb-3 max-md:pt-0 max-md:text-xl">
                     <Link href={`/products/${p.slug}`} className="font-display font-bold underline-offset-4 hover:underline" style={{ color: p.glow }}>
                       {p.name}
                     </Link>
                   </th>
-                  <td className="py-4 pr-6">{p.glance.builtFor}</td>
-                  <td className="py-4 pr-6">{p.glance.youGet}</td>
-                  <td className="py-4">{p.glance.deliveredAs}</td>
+                  <td data-label="Built for" className="py-4 pr-6 max-md:block max-md:py-2 before:mb-0.5 before:block before:text-sm before:text-muted before:content-[attr(data-label)] md:before:hidden">{p.glance.builtFor}</td>
+                  <td data-label="What you get" className="py-4 pr-6 max-md:block max-md:py-2 before:mb-0.5 before:block before:text-sm before:text-muted before:content-[attr(data-label)] md:before:hidden">{p.glance.youGet}</td>
+                  <td data-label="Delivered as" className="py-4 max-md:block max-md:py-2 before:mb-0.5 before:block before:text-sm before:text-muted before:content-[attr(data-label)] md:before:hidden">{p.glance.deliveredAs}</td>
                 </tr>
               ))}
             </tbody>

@@ -45,7 +45,7 @@ Each route group wraps its pages in `Shell` with a theme: `brand`, `products` or
 
 ## Enquiry form
 
-`POST /api/enquiry` emails the message through Resend. Copy `.env.example` to `.env.local` and set `RESEND_API_KEY`, `ENQUIRY_TO` and `ENQUIRY_FROM` (a sender on a domain verified in Resend). Without them the form tells the visitor to use email or WhatsApp. There is no rate limit; add one if the form attracts spam.
+`POST /api/enquiry` emails the message over SMTP (GoDaddy). Copy `.env.example` to `.env.local` and set `SMTP_USER`, `SMTP_PASS` (the mailbox password) and `ENQUIRY_TO`. Without them the form tells the visitor to use email or WhatsApp. There is no rate limit; add one if the form attracts spam.
 
 ## Fonts and assets
 
@@ -57,5 +57,5 @@ Each route group wraps its pages in `Shell` with a theme: `brand`, `products` or
 ## Deploying to Vercel
 
 1. Import the GitHub repo in Vercel. The framework (Next.js) and the build command are detected, no settings to change.
-2. Add these environment variables (Production, and Preview if you want the form to work there): `RESEND_API_KEY`, `ENQUIRY_TO`, `ENQUIRY_FROM`. See `.env.example`.
+2. Add these environment variables (Production, and Preview if you want the form to work there): `SMTP_USER`, `SMTP_PASS`, `ENQUIRY_TO`. See `.env.example`.
 3. Add the domain `www.sentiantal.com`. Canonical URLs, the sitemap and `robots.txt` already point there.

@@ -92,7 +92,7 @@ export const team = [
 export const directorMessage: { by: string; role: string; image: string; paragraphs: string[] } = {
   by: "Dr. Purnachand Kollapudi",
   role: "Co-Founder and CEO",
-  image: "",
+  image: "/team/director.png",
   paragraphs: [
     "We started Sentiantal because too many good ideas stop at a prototype. A farmer still waits days for a soil report. A family still finds out about a heart problem late. A student still practises for an interview alone. These are everyday problems, and technology can help with them now.",
     "So we build things people can pick up and use. A handheld soil tester that gives a report in two minutes. A wearable that raises an alert in time. A mock interview that gives feedback straight away. Each one is made by a small team that tests it in the field, with the people it is meant for, and changes it when they tell us what is not working.",
